@@ -1,0 +1,89 @@
+service: #project name
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: sa-east-1
+  tags:
+    Cliente: #client
+    Jogo: #game
+  environment:
+    GAME_REQUESTS_TABLE:
+      Ref: GameRequests
+    LOG_TABLE:
+      Ref: Log
+    QUESTIONS_TABLE:
+      Ref: Questions
+    USERS_TABLE:
+      Ref: Users
+    S3_BUCKET_NAME: ${self:custom.avatarsBucket}
+    S3_CONTENT_BUCKET_NAME: ${self:custom.contentBucket}
+    ONESIGNAL_REST_API_KEY: ${self:custom.onesignalAPiKey}
+    ONESIGNAL_APP_ID: ${self:custom.onesignalAppId}
+    ONESIGNAL_FINALIZADO_TEMPLATE_ID: ${self:custom.onesignalFinalizadoTemplateId}
+    ONESIGNAL_DESAFIO_TEMPLATE_ID: ${self:custom.onesignalDesafioTemplateId}
+    ONESIGNAL_SUAVEZ_TEMPLATE_ID: ${self:custom.onesignalSuaVezTemplateId}
+      
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:DeleteTable
+        - dynamodb:CreateTable
+        - dynamodb:BatchWriteItem 
+        - s3:GetObject
+        - s3:PutObject
+        - s3:PutBucketNotification
+        - s3:ListBucket
+        - kms:*
+      # Restrict our IAM role permissions to
+      # the specific table for the stage
+      Resource:
+        - "Fn::GetAtt": [ GameRequests, Arn ]
+        - "Fn::GetAtt": [ Log, Arn ]
+        - "Fn::GetAtt": [ Questions, Arn ]
+        - "Fn::GetAtt": [ Users, Arn ]
+        - "Fn::Join": ["/", [{"Fn::GetAtt": [ Users, Arn ]}, "index/*"] ]
+        - "Fn::Join": ["",  ["arn:aws:s3:::", { "Ref": "AvatarsBucket" }, "/*" ] ]
+        - "Fn::Join": ["",  ["arn:aws:s3:::", { "Ref": "ContentBucket" }, "/*" ] ]
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  avatarsBucket: ${self:service}-challenge-${self:custom.stage}-avatars-bucket
+  contentBucket: ${self:service}-challenge-${self:custom.stage}-content-bucket
+  onesignalAPiKey: #removed
+  onesignalAppId: #removed
+  onesignalFinalizadoTemplateId: #removed
+  onesignalDesafioTemplateId: #removed
+  onesignalSuaVezTemplateId: #removed
+  tableThroughputs:
+    prod: 5
+    default: 1
+  tableThroughput: ${self:custom.tableThroughputs.${self:custom.stage}, self:custom.tableThroughputs.default}
+  
+package:
+  include:
+    - utils/customErrors.js
+  exclude:
+    - node_modules/*
+functions:
+  - ${file(functions/functions.yml)}
+
+resources:
+  # DynamoDB
+  - ${file(resources/dynamodb-tables.yml)}
+  # S3
+  - ${file(resources/s3-bucket.yml)}
+  # APIAuthorizer
+  - ${file(resources/api-authorizer.yml)}
+  # Cognito Not Ready for sa-east-1
+  #- ${file(resources/cognito-user-pool.yml)}
+  
+plugins:
+  - serverless-plugin-existing-s3

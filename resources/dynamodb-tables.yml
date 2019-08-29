@@ -1,0 +1,90 @@
+Resources:
+  GameRequests:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      # Generate a name based on the stage
+      TableName: ${self:service}-${self:custom.stage}-game-requests
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      # Set the capacity based on the stage
+      ProvisionedThroughput:
+        ReadCapacityUnits: ${self:custom.tableThroughput}
+        WriteCapacityUnits: ${self:custom.tableThroughput}
+  Log:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      # Generate a name based on the stage
+      TableName: ${self:service}-${self:custom.stage}-log
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      # Set the capacity based on the stage
+      ProvisionedThroughput:
+        ReadCapacityUnits: ${self:custom.tableThroughput}
+        WriteCapacityUnits: ${self:custom.tableThroughput}
+  Questions:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      # Generate a name based on the stage
+      TableName: ${self:service}-${self:custom.stage}-questions
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      # Set the capacity based on the stage
+      ProvisionedThroughput:
+        ReadCapacityUnits: ${self:custom.tableThroughput}
+        WriteCapacityUnits: ${self:custom.tableThroughput}
+  Users:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      # Generate a name based on the stage
+      TableName: ${self:service}-${self:custom.stage}-users
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: "S"
+        - AttributeName: userGroup
+          AttributeType: "S"
+        - AttributeName: points
+          AttributeType: "N"
+        - AttributeName: const
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: userGroup-points-index
+          KeySchema:
+            - AttributeName: userGroup
+              KeyType: HASH
+            - AttributeName: points
+              KeyType: RANGE
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput:
+              ReadCapacityUnits: ${self:custom.tableThroughput}
+              WriteCapacityUnits: ${self:custom.tableThroughput}
+        - IndexName: const-points-index
+          KeySchema:
+            - AttributeName: const
+              KeyType: HASH
+            - AttributeName: points
+              KeyType: RANGE
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput:
+              ReadCapacityUnits: ${self:custom.tableThroughput}
+              WriteCapacityUnits: ${self:custom.tableThroughput}
+      # Set the capacity based on the stage
+      ProvisionedThroughput:
+        ReadCapacityUnits: ${self:custom.tableThroughput}
+        WriteCapacityUnits: ${self:custom.tableThroughput}

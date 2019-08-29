@@ -1,0 +1,22 @@
+{
+  "name": "challenge-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/i9acaodev/challenge-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/i9acaodev/challenge-backend#readme",
+  "dependencies": {
+    "aws-sdk": "^2.346.0",
+    "csv": "^4.0.0",
+    "jsonfile": "^5.0.0",
+    "serverless-plugin-existing-s3": "^2.2.2"
+  }
+}

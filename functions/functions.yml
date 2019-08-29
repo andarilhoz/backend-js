@@ -1,0 +1,292 @@
+GetAdminQuestion:
+  handler: functions/admin/question/get.handler
+  events:
+    - http:
+        path: /admin/questions
+        method: get
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+PatchAdminQuestion:
+  handler: functions/admin/question/update.handler
+  events:
+    - http:
+        path: /admin/questions
+        method: patch
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID              
+GetAvatar:
+  handler: functions/avatar/get.handler
+  events:
+    - http:
+        path: /avatar
+        method: get
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+UploadAvatar:
+  handler: functions/avatar/update.handler
+  events:
+    - http:
+        path: /avatar
+        method: post
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+UpdateEnergy:
+  handler: functions/energy/update.handler
+  events:
+    - http:
+        path: /energy
+        method: post
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+GetAllGameRequests:
+  handler: functions/gameRequest/getAll.handler
+  events:
+    - http:
+        path: /gamerequest
+        method: get
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+CreateGameRequest:
+  handler: functions/gameRequest/new.handler
+  events:
+    - http:
+        path: /gamerequest
+        method: post
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+GetOneGameRequest:
+  handler: functions/gameRequest/getOne.handler
+  events: 
+    - http:
+        path: /gamerequest/{requestId}
+        method: get
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+        request:
+          parameters:
+            paths:
+              requestId: true
+UpdateGameRequest:
+  handler: functions/gameRequest/gameStateUpdate.handler
+  events:
+    - http:
+        path: /gamerequest/{requestId}
+        method: patch
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+        request:
+          parameters:
+            paths:
+              requestId: true
+InvalidateGameRequest:
+  handler: functions/gameRequest/wo.handler
+  events:
+    - http:
+        path: /gamerequest/invalidate/{gameRequestId}
+        method: get
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+        request:
+          parameters:
+            paths:
+              gameRequestId: true
+GetQuestionPrize:
+  handler: functions/question/getPrize.handler
+  events:
+    - http:
+        path: /question/prize
+        method: post
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+GetUserQuestions:
+  handler: functions/question/getFromUser.handler
+  events:
+    - http:
+        path: /question
+        method: get
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+NewQuestion:
+  handler: functions/question/new.handler
+  events:
+    - http:
+        path: /question
+        method: post
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+GetQuestion:
+  handler: functions/question/get.handler
+  events:
+    - http:
+        path: /question/{gameRequestId}/{category}/{language}
+        method: get
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+        request:
+          parameters:
+            paths:
+              gameRequestId: true
+              category: true
+              language: true
+PostAnswer:
+  handler: functions/answer/post.handler
+  events:
+    - http:
+        path: /answer/{gameRequestId}
+        method: post
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+        request:
+          parameters:
+            paths:
+              gameRequestId: true
+RankingGlobal:
+  handler: functions/ranking/get.handler
+  events:
+    - http:
+        path: /ranking
+        method: get
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+RankingGroup:
+  handler: functions/ranking/get.handler
+  events:
+    - http:
+        path: /ranking/{group}
+        method: get
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+        request:
+          parameters:
+            paths:
+              group: true
+GetAllUsers:
+  handler: functions/user/getAll.handler
+  events:
+    - http:
+        path: /user
+        method: get
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+UpdateUser:
+  handler: functions/user/update.handler
+  events:
+    - http:
+        path: /user
+        method: patch
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+UpdateUserData:
+  handler: functions/user/updateData.handler
+  events:
+    - http:
+        path: /userData
+        method: patch
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID              
+GetOneUser:
+  handler: functions/user/getOne.handler
+  events:
+    - http:
+        path: /user/{email}
+        method: get
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+        request:
+          parameters:
+            paths:
+              email: true
+UpdateVideos:
+  handler: functions/videos/update.handler
+  events:
+    - http:
+        path: /videos
+        method: post
+        cors: true
+        authorizer: 
+          type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
+          authorizerId: 
+              Ref: ApiGatewayAuthorizer  # or hard-code Authorizer ID
+CsvUsers:
+  handler: functions/admin/csvgen.handler
+  events:
+    - http:
+        path: /admin/csv
+        method: get
+        cors: true   
+Register:
+  handler: functions/auth/register.handler
+Login:
+  handler: functions/auth/login.handler
+WatchS3ContentBucket:
+  handler: functions/s3Functions/watchContentBucket.handler
+  events:
+  - existingS3:
+      bucket: ${self:custom.contentBucket}
+      events:
+        - s3:ObjectCreated:*
+      rules:
+        - suffix: .csv

@@ -1,0 +1,19 @@
+Resources:
+  AvatarsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      # Set the CORS policy
+      BucketName: ${self:custom.avatarsBucket}
+  ContentBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      # Set the CORS policy
+      BucketName: ${self:custom.contentBucket}
+# Print out the name of the bucket that is created
+Outputs:
+  AvatarsBucketName:
+    Value:
+      Ref: AvatarsBucket
+  ContentBucketName:
+    Value:
+      Ref: ContentBucket
