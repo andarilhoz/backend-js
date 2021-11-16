@@ -14,7 +14,7 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/i9acaodev/challenge-backend#readme",
   "dependencies": {
-    "aws-sdk": "^2.346.0",
+    "aws-sdk": "^2.814.0",
     "csv": "^4.0.0",
     "jsonfile": "^5.0.0",
     "serverless-plugin-existing-s3": "^2.2.2"
